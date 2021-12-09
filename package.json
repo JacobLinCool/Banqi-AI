@@ -1,0 +1,20 @@
+{
+  "name": "banqi-ai",
+  "version": "1.0.0",
+  "description": "Fork from https://github.com/howard9199/AI-banqi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacobLinCool/Banqi-AI.git"
+  },
+  "keywords": [],
+  "author": "JacobLinCool <jacoblincool@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JacobLinCool/Banqi-AI/issues"
+  },
+  "homepage": "https://github.com/JacobLinCool/Banqi-AI#readme"
+}
