@@ -54,12 +54,14 @@ function auto_move(color: string, board: string[][]): number[] {
         }
     }
     if (max_rank == -1) {
-        let rand_move = legal_cnt > 0 ? Math.random() % legal_cnt : 0;
+        let rand_move = legal_cnt > 0 ? Math.floor(Math.random() * 4) % legal_cnt : 0;
         to_x = legal_x[rand_move];
         to_y = legal_y[rand_move];
     }
 
-    return [max_x + 1, max_y + 1, to_x + 1, to_y + 1];
+    const moves = [max_x + 1, max_y + 1, to_x + 1, to_y + 1];
+    // console.log("Moves", moves);
+    return moves;
 
     function auto_traversal_move(x: number, y: number) {
         legal_cnt = 0;

@@ -270,6 +270,8 @@ void player_move(Board* board, int8_t player) {
     while (1) {
         printf("%s (x,y): ", my->name);
         int8_t x, y;
+
+        fflush(stdout);
         scanf("%" SCNd8 ",%" SCNd8, &x, &y);
 
         if (y < 1 || y > 4 || x < 1 || x > 8) {
@@ -308,6 +310,7 @@ void player_move(Board* board, int8_t player) {
             int8_t to_x, to_y;
             while (1) {
                 printf("To (x,y): ");
+                fflush(stdout);
                 scanf("%" SCNd8 ",%" SCNd8, &to_x, &to_y);
 
                 if (to_y < 1 || to_y > 4 || to_x < 1 || to_x > 8) {

@@ -10,14 +10,16 @@ class InteractiveRunner extends EventEmitter {
         super();
     }
 
-    run({ buffer_timeout, realtime }: { buffer_timeout: number; realtime: boolean } = { buffer_timeout: 10, realtime: false }) {
-        const fstream = fs.createWriteStream(path.join(__dirname, "stdio.txt"));
+    run({ buffer_timeout, realtime }: { buffer_timeout?: number; realtime?: boolean } = { buffer_timeout: 10, realtime: false }) {
+        const fstream = realtime ? fs.createWriteStream(path.join(__dirname, "stdio.txt")) : null;
         let log = "";
         const result = new Promise((resolve, reject) => {
             const program = spawn(this.executable_path, { shell: true });
             let buffer = "",
                 buffering = false,
                 buffer_timer: NodeJS.Timeout | null = null;
+
+            console.log(program.pid);
 
             program.on("error", (err) => {
                 this.emit("error", { program, err });
@@ -30,11 +32,11 @@ class InteractiveRunner extends EventEmitter {
             });
 
             program.stdout.on("data", (data) => {
-                console.log(data);
-                this.emit("data", { program, send, data });
-                if (realtime) {
+                data = data.toString();
+                if (realtime && fstream) {
                     fstream.write(data);
                 }
+                this.emit("data", { program, send, data });
                 log += data;
 
                 if (buffering) {
@@ -56,10 +58,10 @@ class InteractiveRunner extends EventEmitter {
             });
 
             function send(data: string): void {
-                program.stdin.write(data);
-                if (realtime) {
+                if (realtime && fstream) {
                     fstream.write(data);
                 }
+                program.stdin.write(data);
                 log += data;
             }
         });
