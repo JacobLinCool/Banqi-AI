@@ -5,15 +5,22 @@ import path from "path";
 
 type ProgramEvent = "error" | "exit" | "data" | "buffered";
 
+interface RunOptions {
+    buffer_timeout?: number;
+    realtime?: boolean;
+    delay?: number;
+}
+
 class InteractiveRunner extends EventEmitter {
     constructor(private executable_path: string) {
         super();
     }
 
-    run({ buffer_timeout, realtime }: { buffer_timeout?: number; realtime?: boolean } = { buffer_timeout: 10, realtime: false }) {
-        const fstream = realtime ? fs.createWriteStream(path.join(__dirname, "stdio.txt")) : null;
-        let log = "";
-        const result = new Promise((resolve, reject) => {
+    run({ buffer_timeout, realtime, delay }: RunOptions = { buffer_timeout: 10, realtime: false, delay: 10 }) {
+        const fstream = realtime ? fs.createWriteStream(path.join(process.cwd(), "stdio." + Date.now() + ".txt")) : null;
+        const returning: any = { log: "", result: null };
+        returning.log = "";
+        returning.result = new Promise((resolve, reject) => {
             const program = spawn(this.executable_path, { shell: true });
             let buffer = "",
                 buffering = false,
@@ -36,8 +43,8 @@ class InteractiveRunner extends EventEmitter {
                 if (realtime && fstream) {
                     fstream.write(data);
                 }
+                returning.log += data;
                 this.emit("data", { program, send, data });
-                log += data;
 
                 if (buffering) {
                     buffer += data;
@@ -58,15 +65,17 @@ class InteractiveRunner extends EventEmitter {
             });
 
             function send(data: string): void {
-                if (realtime && fstream) {
-                    fstream.write(data);
-                }
-                program.stdin.write(data);
-                log += data;
+                setTimeout(() => {
+                    if (realtime && fstream) {
+                        fstream.write(data);
+                    }
+                    returning.log += data;
+                    program.stdin.write(data);
+                }, delay);
             }
         });
 
-        return { result, log };
+        return returning;
     }
 
     on(event: ProgramEvent, listener: (...args: any[]) => void): this {

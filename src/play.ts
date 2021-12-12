@@ -1,7 +1,5 @@
 import auto_move from "./automove";
 
-const delay = 10;
-
 class Agent {
     constructor(public color: string) {}
 }
@@ -12,8 +10,11 @@ let send_buffer = "";
 let round = 0;
 
 function play({ send, buffer }: { send: (data: string) => void; buffer: string }) {
+    const { board, player, exchange } = parse(buffer);
     try {
-        const { board, player, exchange } = parse(buffer);
+        if (!player && !exchange && !send_buffer) {
+            return;
+        }
 
         if (exchange) {
             [agents[0], agents[1]] = [agents[1], agents[0]];
@@ -22,16 +23,19 @@ function play({ send, buffer }: { send: (data: string) => void; buffer: string }
         if (board.length === 4) {
             console.log("Round", round++);
             const agent = agents[player - 1];
+
             const moves = auto_move(agent.color, board);
 
-            setTimeout(() => send(`${moves[0]}, ${moves[1]}\n`), delay);
+            setTimeout(() => send(`${moves[0]}, ${moves[1]}\n`), 0);
             send_buffer = `${moves[2]}, ${moves[3]}\n`;
         } else {
-            // console.log(send_buffer);
-            setTimeout(() => send(send_buffer), delay);
+            const move = send_buffer;
+            send_buffer = "";
+            setTimeout(() => send(move), 0);
         }
     } catch (err: any) {
         console.log(err.message as string);
+        console.log(board, player, exchange);
         process.exit(0);
     }
 }
