@@ -21,7 +21,7 @@ npm run build
 ### Run
 
 ```bash
-npm start <executable path> [flags]
+dist/bqai-[win,macos,linux] <executable path> [flags]
 ```
 
 #### Flags
@@ -31,4 +31,19 @@ npm start <executable path> [flags]
   -d: Reaction delay in milliseconds.
   -o: Output file path.
   -r: Realtime Debug.
+```
+
+## Notice
+
+You must flush the output stream before scanning the input stream.
+
+Use `fflush(stdout);` before scanning the input stream.
+
+For Example:
+
+```diff
+  printf("Player 1 (x,y): ");
+  int x, y;
++ fflush(stdout);
+  scanf("%d,%d", &x, &y);
 ```
