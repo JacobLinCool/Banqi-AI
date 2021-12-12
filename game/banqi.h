@@ -39,6 +39,7 @@ typedef struct Player {
 typedef struct Board {
     Chess grid[4][8];
     Player player[2];
+    int8_t peace;
 } Board;
 
 Board create_board();
