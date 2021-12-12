@@ -9,7 +9,7 @@ const agents = [new Agent("1"), new Agent("A")];
 let send_buffer = "";
 let round = 0;
 
-function play({ send, buffer }: { send: (data: string) => void; buffer: string }) {
+function play({ send, buffer, silent }: { send: (data: string) => void; buffer: string; silent: boolean }) {
     const { board, player, exchange } = parse(buffer);
     try {
         if (!player && !exchange && !send_buffer) {
@@ -21,7 +21,7 @@ function play({ send, buffer }: { send: (data: string) => void; buffer: string }
         }
 
         if (board.length === 4) {
-            console.log("Round", round++);
+            if (!silent) console.log("Round", round++);
             const agent = agents[player - 1];
 
             const moves = auto_move(agent.color, board);

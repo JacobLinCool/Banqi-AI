@@ -12,7 +12,7 @@ if (!executable || fs.existsSync(resolve(executable)) === false) {
     console.log("  -b: Buffer timeout in milliseconds.");
     console.log("  -d: Reaction delay in milliseconds.");
     console.log("  -o: Output file path.");
-    console.log("  -r: Realtime Debug.");
+    console.log("  -r: Realtime debugging mode.");
     process.exit(1);
 }
 

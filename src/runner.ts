@@ -40,8 +40,9 @@ class InteractiveRunner extends EventEmitter {
 
             program.stdout.on("data", (data) => {
                 data = data.toString();
-                if (realtime && fstream) {
-                    fstream.write(data);
+                if (realtime) {
+                    process.stdout.write(data);
+                    if (fstream) fstream.write(data);
                 }
                 returning.log += data;
                 this.emit("data", { program, send, data });
@@ -59,15 +60,16 @@ class InteractiveRunner extends EventEmitter {
 
                 buffer_timer = setTimeout(() => {
                     buffering = false;
-                    this.emit("buffered", { program, send, buffer });
+                    this.emit("buffered", { program, send, buffer, silent: realtime });
                     buffer = "";
                 }, buffer_timeout);
             });
 
             function send(data: string): void {
                 setTimeout(() => {
-                    if (realtime && fstream) {
-                        fstream.write(data);
+                    if (realtime) {
+                        process.stdout.write(data);
+                        if (fstream) fstream.write(data);
                     }
                     returning.log += data;
                     program.stdin.write(data);
