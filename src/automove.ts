@@ -79,7 +79,12 @@ function auto_move(color: string, board: string[][]): number[] {
             for (let i = 0; i < 4; i++) {
                 let has_fort = 0;
                 let cannon_move = 1;
-                while (y + diry[i] * cannon_move >= 0 && y + diry[i] * cannon_move < 4 && x + dirx[i] * cannon_move >= 0 && x + dirx[i] * cannon_move < 8) {
+                while (
+                    y + diry[i] * cannon_move >= 0 &&
+                    y + diry[i] * cannon_move < 4 &&
+                    x + dirx[i] * cannon_move >= 0 &&
+                    x + dirx[i] * cannon_move < 8
+                ) {
                     if (board[y + diry[i] * cannon_move][x + dirx[i] * cannon_move] != " ") {
                         if (has_fort) {
                             if (auto_legal_move(x, y, x + dirx[i] * cannon_move, y + diry[i] * cannon_move)) {

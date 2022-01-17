@@ -45,7 +45,9 @@ function parse(data: string) {
     //     console.log(data);
     // }
     const board = [
-        ...data.matchAll(/\d ?\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])/g),
+        ...data.matchAll(
+            /\d ?\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])\|([* A-G1-7])/g,
+        ),
     ].map((line) => line.slice(1));
 
     const player = parseInt(data.toLowerCase().match(/player ?(\d)/)?.[1] as string);
