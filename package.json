@@ -8,7 +8,8 @@
     },
     "scripts": {
         "start": "node lib/index.js",
-        "build": "tsc && pkg ."
+        "build": "tsup && pkg .",
+        "format": "prettier --write '**/*.{js,ts,json,yaml,md}' '!lib'"
     },
     "repository": {
         "type": "git",
@@ -24,11 +25,12 @@
     "devDependencies": {
         "@types/node": "^16.11.12",
         "pkg": "^5.5.1",
-        "ts-node": "^10.4.0",
+        "prettier": "^2.5.1",
+        "tsup": "^5.11.11",
         "typescript": "^4.5.3"
     },
     "pkg": {
         "scripts": "lib/**/*.js",
         "outputPath": "dist"
-      }
+    }
 }

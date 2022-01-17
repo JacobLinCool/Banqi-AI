@@ -2,7 +2,7 @@
     "ts-node": {
         // skip typechecking
         "transpileOnly": true,
-        "files": true,
+        "files": true
     },
     "exclude": ["lib", "example", "tests"],
     "compilerOptions": {
